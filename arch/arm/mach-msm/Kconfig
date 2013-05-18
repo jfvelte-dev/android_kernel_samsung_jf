@@ -1798,6 +1798,12 @@ config GPU_OVERCLOCK
 	help
 	  Krait 600 ab GPU overclock up to 600 MHz
 
+config CPU_OVERCLOCK
+	bool "Enable CPU Overclocking option"
+	default n
+	help
+	  Krait overclocking up to 2.3 GHz
+
 config LOW_CPUCLOCKS
 	bool "Enable ultra low CPU clocks"
 	default n
