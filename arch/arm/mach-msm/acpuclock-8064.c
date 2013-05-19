@@ -543,11 +543,12 @@ static struct acpu_level tbl_PVS0_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1337500 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1362500 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1387500 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1412500 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1437500 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1450000 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
@@ -581,11 +582,12 @@ static struct acpu_level tbl_PVS1_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1300000 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1325000 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1350000 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1375000 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1400000 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1425000 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
@@ -619,11 +621,12 @@ static struct acpu_level tbl_PVS2_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1262500 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1287500 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1312500 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1337500 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1362500 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1387500 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
@@ -657,11 +660,12 @@ static struct acpu_level tbl_PVS3_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1225000 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1250000 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1275000 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1300000 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1325000 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1350000 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
@@ -695,11 +699,12 @@ static struct acpu_level tbl_PVS4_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1200000 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1225000 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1250000 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1275000 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1300000 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1325000 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
@@ -733,11 +738,12 @@ static struct acpu_level tbl_PVS5_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1175000 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1200000 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1225000 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1250000 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1275000 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1300000 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
@@ -771,11 +777,12 @@ static struct acpu_level tbl_PVS6_2000MHz[] __initdata = {
 	{ 1, {  1998000, HFPLL, 1, 0x4A }, L2(15), 1150000 },
 	{ 1, {  2052000, HFPLL, 1, 0x4C }, L2(15), 1175000 },
 	{ 1, {  2106000, HFPLL, 1, 0x4E }, L2(15), 1200000 },
+#ifdef CONFIG_OC_ULTIMATE
 	{ 1, {  2160000, HFPLL, 1, 0x50 }, L2(15), 1225000 },
 	{ 1, {  2214000, HFPLL, 1, 0x52 }, L2(15), 1250000 },
 	{ 1, {  2268000, HFPLL, 1, 0x54 }, L2(15), 1275000 },
 #endif
->>>>>>> 6208e05... CPU Overclock: initial overclock for Krait 600 (2.0 GHz variants)
+#endif
 	{ 0, { 0 } }
 };
 
