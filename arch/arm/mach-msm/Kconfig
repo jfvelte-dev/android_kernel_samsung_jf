@@ -1792,6 +1792,12 @@ config CPU_VOLTAGE_TABLE
 	help
 	  Krait User Votlage Control
 
+config GPU_OVERCLOCK
+	bool "Enable GPU Overclocking option"
+	default n
+	help
+	  Krait 600 ab GPU overclock up to 600 MHz
+
 config MSM_AVS_HW
 	bool "Enable Adaptive Voltage Scaling (AVS)"
 	default n
