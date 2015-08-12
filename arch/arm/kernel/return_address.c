@@ -58,10 +58,16 @@ void *return_address(unsigned int level)
 
 #else /* if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND) */
 
+<<<<<<< HEAD
 void *return_address(unsigned int level)
 {
 	return NULL;
 }
+=======
+#if defined(CONFIG_ARM_UNWIND)
+#warning "TODO: return_address should use unwind tables"
+#endif
+>>>>>>> 0ee822a... gcc5: ARM: 8158/1: LLVMLinux: use static inline in ARM ftrace.h
 
 #endif /* if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND) / else */
 
