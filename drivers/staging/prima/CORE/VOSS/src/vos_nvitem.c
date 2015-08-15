@@ -1963,7 +1963,6 @@ static int create_crda_regulatory_entry(struct wiphy *wiphy,
           continue;
        if (wiphy->bands[i] == NULL)
        {
-          pr_info("error: wiphy->bands[i] is NULL, i = %d\n", i);
           return -1;
        }
        // internal channels[] is one continous array for both 2G and 5G bands
