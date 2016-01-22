@@ -782,7 +782,7 @@ int mdp4_lcdc_off(struct platform_device *pdev)
 	vctrl->wait_vsync_cnt = 0;
 	if (pipe == NULL)
 		return -EINVAL;
-	if (pipe->ov_blt_addr) {
+	if (pipe && pipe->ov_blt_addr) {
 		spin_lock_irqsave(&vctrl->spin_lock, flags);
 		if (vctrl->ov_koff != vctrl->ov_done)
 			need_wait = 1;
