@@ -50,11 +50,11 @@ static void get_timestamp(struct ssp_data *data, int iSensorData,
 		&& ((sensortime->irq_diff * 10) <
 		(data->adDelayBuf[iSensorData] * 100))) {
 		u64 move_timestamp;
-		u64 shift_tinestamp =
+		u64 shift_timestamp =
 			div64_long(data->adDelayBuf[iSensorData], 2);
 		for (move_timestamp = data->lastTimestamp[iSensorData] +
 			data->adDelayBuf[iSensorData];
-			move_timestamp < (data->timestamp - shift_tinestamp);
+			move_timestamp < (data->timestamp - shift_timestamp);
 			move_timestamp += data->adDelayBuf[iSensorData]) {
 			sensorsdata->timestamp = move_timestamp;
 			data->report_sensor_data[iSensorData](data,
