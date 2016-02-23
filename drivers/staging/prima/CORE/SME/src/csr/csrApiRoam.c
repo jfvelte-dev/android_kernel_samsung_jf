@@ -8137,14 +8137,10 @@ eHalStatus csrRoamProcessSetKeyCommand( tpAniSirGlobal pMac, tSmeCmd *pCommand )
     tAniEdType edType = csrTranslateEncryptTypeToEdType( pCommand->u.setKeyCmd.encType );
     tANI_BOOLEAN fUnicast = ( pCommand->u.setKeyCmd.peerMac[0] == 0xFF ) ? eANI_BOOLEAN_FALSE : eANI_BOOLEAN_TRUE;
     tANI_U32 sessionId = pCommand->sessionId;
+
 #ifdef FEATURE_WLAN_DIAG_SUPPORT_CSR
     tCsrRoamSession *pSession = CSR_GET_SESSION( pMac, sessionId );
     WLAN_VOS_DIAG_EVENT_DEF(setKeyEvent, vos_event_wlan_security_payload_type);
-
-    if(NULL == pSession){
-       smsLog(pMac, LOGE, FL("  session %d not found "), sessionId);
-       return eHAL_STATUS_FAILURE;
-    }
 
     if(eSIR_ED_NONE != edType)
     {
@@ -8165,6 +8161,7 @@ eHalStatus csrRoamProcessSetKeyCommand( tpAniSirGlobal pMac, tSmeCmd *pCommand )
         if(CSR_IS_ENC_TYPE_STATIC(edType))
         {
             tANI_U32 defKeyId;
+
             //It has to be static WEP here
             if(HAL_STATUS_SUCCESS(ccmCfgGetInt(pMac, WNI_CFG_WEP_DEFAULT_KEYID, &defKeyId)))
             {
@@ -8179,6 +8176,7 @@ eHalStatus csrRoamProcessSetKeyCommand( tpAniSirGlobal pMac, tSmeCmd *pCommand )
         WLAN_VOS_DIAG_EVENT_REPORT(&setKeyEvent, EVENT_WLAN_SECURITY);
     }
 #endif //FEATURE_WLAN_DIAG_SUPPORT_CSR
+
     if( csrIsSetKeyAllowed(pMac, sessionId) )
     {
         status = csrSendMBSetContextReqMsg( pMac, sessionId, 
@@ -8190,14 +8188,15 @@ eHalStatus csrRoamProcessSetKeyCommand( tpAniSirGlobal pMac, tSmeCmd *pCommand )
     }
     else
     {
-        smsLog( pMac, LOGW, FL(" cannot process not connected") );
+        smsLog( pMac, LOGW, FL(" cannot process not connected\n") );
         //Set this status so the error handling take care of the case.
         status = eHAL_STATUS_CSR_WRONG_STATE;
     }
     if( !HAL_STATUS_SUCCESS(status) )
     {
-        smsLog( pMac, LOGE, FL("  error status %d"), status );
+        smsLog( pMac, LOGE, FL("  error status %d\n"), status );
         csrRoamCallCallback( pMac, sessionId, NULL, pCommand->u.setKeyCmd.roamId, eCSR_ROAM_SET_KEY_COMPLETE, eCSR_ROAM_RESULT_FAILURE);
+
 #ifdef FEATURE_WLAN_DIAG_SUPPORT_CSR
         if(eCSR_ENCRYPT_TYPE_NONE != edType)
         {
@@ -8213,7 +8212,9 @@ eHalStatus csrRoamProcessSetKeyCommand( tpAniSirGlobal pMac, tSmeCmd *pCommand )
             WLAN_VOS_DIAG_EVENT_REPORT(&setKeyEvent, EVENT_WLAN_SECURITY);
         }
 #endif //FEATURE_WLAN_DIAG_SUPPORT_CSR
+
     }
+
     return ( status );
 }
 
@@ -8959,13 +8960,13 @@ void csrRoamCheckForLinkStatusChange( tpAniSirGlobal pMac, tSirSmeRsp *pSirMsg )
                 eCsrRoamResult result = eCSR_ROAM_RESULT_MIC_ERROR_UNICAST;
 #ifdef FEATURE_WLAN_DIAG_SUPPORT_CSR
                 {
+					WLAN_VOS_DIAG_EVENT_DEF(secEvent, vos_event_wlan_security_payload_type);
                     tCsrRoamSession *pSession = CSR_GET_SESSION( pMac, sessionId );
                     if(!pSession)
                     {
                         smsLog(pMac, LOGE, FL("  session %d not found "), sessionId);
                         return;
                     }
-                    WLAN_VOS_DIAG_EVENT_DEF(secEvent, vos_event_wlan_security_payload_type);
                     palZeroMemory(pMac->hHdd, &secEvent, sizeof(vos_event_wlan_security_payload_type));
                     secEvent.eventId = WLAN_SECURITY_EVENT_MIC_ERROR;
                     secEvent.encryptionModeMulticast = 
