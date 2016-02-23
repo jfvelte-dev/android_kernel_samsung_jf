@@ -1420,7 +1420,7 @@ typedef enum
 
 #define CFG_VOS_TRACE_ENABLE_MIN          (0)
 #define CFG_VOS_TRACE_ENABLE_MAX          (0xff)
-#define CFG_VOS_TRACE_ENABLE_DEFAULT      (0xffff)
+#define CFG_VOS_TRACE_ENABLE_DEFAULT      (0xff)
 
 /*
  * WDI Trace Enable Control
@@ -1447,7 +1447,7 @@ typedef enum
 #define CFG_WDI_TRACE_ENABLE_PAL_NAME     "wdiTraceEnablePAL"
 #define CFG_WDI_TRACE_ENABLE_MIN          (0)
 #define CFG_WDI_TRACE_ENABLE_MAX          (0x7f)
-#define CFG_WDI_TRACE_ENABLE_DEFAULT      (0xffffffff)
+#define CFG_WDI_TRACE_ENABLE_DEFAULT      (0x7f)
 
 #define HDD_MCASTBCASTFILTER_FILTER_NONE                       0x00
 #define HDD_MCASTBCASTFILTER_FILTER_ALL_MULTICAST              0x01
