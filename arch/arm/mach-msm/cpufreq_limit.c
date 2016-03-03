@@ -28,7 +28,11 @@
 
 //#define DEBUG_CPU_LIMITER
 
+#ifdef CONFIG_CPU_OVERCLOCK
+uint32_t limited_max_freq = 2106000;
+#else
 uint32_t limited_max_freq = 1890000;
+#endif
 
 static int update_cpu_max_freq(int cpu, uint32_t max_freq)
 {
