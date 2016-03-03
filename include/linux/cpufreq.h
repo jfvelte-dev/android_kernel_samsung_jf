@@ -365,7 +365,11 @@ int get_min_freq(void);
 #define MIN_FREQ_LIMIT		get_min_freq() /* 384000 */
 
 #define MIN_TOUCH_LIMIT		1134000
+#ifdef CONFIG_CPU_OVERCLOCK
+#define MIN_TOUCH_HIGH_LIMIT		2106000
+#else
 #define MIN_TOUCH_HIGH_LIMIT		1890000
+#endif
 #define MIN_TOUCH_LIMIT_SECOND	810000
 #define MIN_TOUCH_HIGH_LIMIT_SECOND	1566000
 
