@@ -129,6 +129,7 @@ static struct i2c_gpio_platform_data gpio_i2c_data_fgchg = {
 
 static bool sec_fg_gpio_init(void)
 {
+#if !defined(CONFIG_MACH_JFVE_EUR)
 	struct pm_gpio param = {
 		.direction     = PM_GPIO_DIR_IN,
 		.pull          = PM_GPIO_PULL_NO,
@@ -159,7 +160,8 @@ static bool sec_fg_gpio_init(void)
 				&fuel_alert_mppcfg);
 	}
 	else
-		gpio_tlmm_config(GPIO_CFG(GPIO_FUEL_INT,  0, GPIO_CFG_INPUT,
+#endif
+	gpio_tlmm_config(GPIO_CFG(GPIO_FUEL_INT,  0, GPIO_CFG_INPUT,
 			GPIO_CFG_NO_PULL, GPIO_CFG_2MA), 1);
 	gpio_tlmm_config(GPIO_CFG(gpio_i2c_data_fgchg.scl_pin, 0,
 			GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL, GPIO_CFG_2MA), 1);
