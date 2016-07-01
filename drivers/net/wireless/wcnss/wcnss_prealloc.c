@@ -1,4 +1,4 @@
-/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012,2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -13,8 +13,9 @@
 #include <linux/slab.h>
 #include <linux/err.h>
 #include <linux/wcnss_wlan.h>
+#include <linux/spinlock.h>
 
-static DEFINE_MUTEX(alloc_lock);
+static DEFINE_SPINLOCK(alloc_lock);
 
 struct wcnss_prealloc {
 	int occupied;
@@ -28,6 +29,55 @@ static struct wcnss_prealloc wcnss_allocs[] = {
 	{0, 8  * 1024, NULL},
 	{0, 8  * 1024, NULL},
 	{0, 8  * 1024, NULL},
+	{0, 8  * 1024, NULL},
+	{0, 8  * 1024, NULL},
+	{0, 8  * 1024, NULL},
+	{0, 8  * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 12 * 1024, NULL},
+	{0, 16 * 1024, NULL},
+	{0, 16 * 1024, NULL},
+	{0, 16 * 1024, NULL},
+	{0, 16 * 1024, NULL},
+	{0, 16 * 1024, NULL},
+	{0, 16 * 1024, NULL},
+	{0, 24 * 1024, NULL},
+	{0, 24 * 1024, NULL},
+	{0, 32 * 1024, NULL},
 	{0, 32 * 1024, NULL},
 	{0, 32 * 1024, NULL},
 	{0, 32 * 1024, NULL},
@@ -37,6 +87,9 @@ static struct wcnss_prealloc wcnss_allocs[] = {
 	{0, 32 * 1024, NULL},
 	{0, 64 * 1024, NULL},
 	{0, 64 * 1024, NULL},
+	{0, 64 * 1024, NULL},
+	{0, 64 * 1024, NULL},
+	{0, 76 * 1024, NULL},
 };
 
 int wcnss_prealloc_init(void)
@@ -57,15 +110,18 @@ void wcnss_prealloc_deinit(void)
 {
 	int i = 0;
 
-	for (i = 0; i < ARRAY_SIZE(wcnss_allocs); i++)
+	for (i = 0; i < ARRAY_SIZE(wcnss_allocs); i++) {
 		kfree(wcnss_allocs[i].ptr);
+		wcnss_allocs[i].ptr = NULL;
+	}
 }
 
 void *wcnss_prealloc_get(unsigned int size)
 {
 	int i = 0;
+	unsigned long flags;
 
-	mutex_lock(&alloc_lock);
+	spin_lock_irqsave(&alloc_lock, flags);
 	for (i = 0; i < ARRAY_SIZE(wcnss_allocs); i++) {
 		if (wcnss_allocs[i].occupied)
 			continue;
@@ -73,12 +129,13 @@ void *wcnss_prealloc_get(unsigned int size)
 		if (wcnss_allocs[i].size > size) {
 			/* we found the slot */
 			wcnss_allocs[i].occupied = 1;
-			mutex_unlock(&alloc_lock);
+			spin_unlock_irqrestore(&alloc_lock, flags);
 			return wcnss_allocs[i].ptr;
 		}
 	}
-	pr_err("wcnss: %s: prealloc not available\n", __func__);
-	mutex_unlock(&alloc_lock);
+	spin_unlock_irqrestore(&alloc_lock, flags);
+	pr_err("wcnss: %s: prealloc not available for size: %d\n",
+			__func__, size);
 
 	return NULL;
 }
@@ -87,17 +144,34 @@ EXPORT_SYMBOL(wcnss_prealloc_get);
 int wcnss_prealloc_put(void *ptr)
 {
 	int i = 0;
+	unsigned long flags;
 
-	mutex_lock(&alloc_lock);
+	spin_lock_irqsave(&alloc_lock, flags);
 	for (i = 0; i < ARRAY_SIZE(wcnss_allocs); i++) {
 		if (wcnss_allocs[i].ptr == ptr) {
 			wcnss_allocs[i].occupied = 0;
-			mutex_unlock(&alloc_lock);
+			spin_unlock_irqrestore(&alloc_lock, flags);
 			return 1;
 		}
 	}
-	mutex_unlock(&alloc_lock);
+	spin_unlock_irqrestore(&alloc_lock, flags);
 
 	return 0;
 }
 EXPORT_SYMBOL(wcnss_prealloc_put);
+
+static int __init wcnss_pre_alloc_init(void)
+{
+	return wcnss_prealloc_init();
+}
+
+static void __exit wcnss_pre_alloc_exit(void)
+{
+	wcnss_prealloc_deinit();
+}
+
+module_init(wcnss_pre_alloc_init);
+module_exit(wcnss_pre_alloc_exit);
+
+MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("WCNSS Prealloc Driver");
