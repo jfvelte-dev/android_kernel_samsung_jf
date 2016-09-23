@@ -84,7 +84,7 @@
 #define DEFAULT_RETRIES		3
 
 extern int poweroff_charging;
-
+/*
 enum {
 	SGH_I337,
 	SPH_L720,
@@ -101,7 +101,7 @@ enum {
 	GT_I9515,
 	GT_I9515L,
 };
-
+*/
 extern int samsung_hardware;
 
 /* SSP Binary Type */

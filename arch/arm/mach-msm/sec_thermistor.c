@@ -119,6 +119,8 @@ static int convert_adc_to_temper(struct sec_therm_info *info, unsigned int adc)
 	int low = 0;
 	int high = 0;
 	int mid = 0;
+	int temp = 0;
+	int temp2 = 0;
 
 	if (!info->pdata->adc_table || !info->pdata->adc_arr_size) {
 		/* using fake temp */
@@ -127,16 +129,39 @@ static int convert_adc_to_temper(struct sec_therm_info *info, unsigned int adc)
 
 	high = info->pdata->adc_arr_size - 1;
 
+	if (info->pdata->adc_table[low].adc >= adc) {
+		temp = info->pdata->adc_table[low].temperature;
+		goto convert_adc_to_temp_goto;
+	} else if (info->pdata->adc_table[high].adc <= adc) {
+		temp = info->pdata->adc_table[high].temperature;
+		goto convert_adc_to_temp_goto;
+	}
+
 	while (low <= high) {
 		mid = (low + high) / 2;
-		if (info->pdata->adc_table[mid].adc > adc)
+		if (info->pdata->adc_table[mid].adc > adc) {
 			high = mid - 1;
-		else if (info->pdata->adc_table[mid].adc < adc)
+		} else if (info->pdata->adc_table[mid].adc < adc) {
 			low = mid + 1;
-		else
-			break;
+		} else {
+			temp = info->pdata->adc_table[mid].temperature;
+			goto convert_adc_to_temp_goto;
+		}
 	}
-	return info->pdata->adc_table[mid].temperature;
+
+	temp = info->pdata->adc_table[high].temperature;
+
+	temp2 = (info->pdata->adc_table[low].temperature -
+			info->pdata->adc_table[high].temperature) *
+			(adc - info->pdata->adc_table[high].adc);
+
+	temp += temp2 /
+		(info->pdata->adc_table[low].adc -
+			info->pdata->adc_table[high].adc);
+
+convert_adc_to_temp_goto:
+
+	return temp;
 }
 
 static void notify_change_of_temperature(struct sec_therm_info *info)
